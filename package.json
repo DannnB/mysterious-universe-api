@@ -1,0 +1,29 @@
+{
+  "name": "mysterious-universe-api",
+  "version": "1.0.0",
+  "description": "A simple API that will allow you to look up data about each series and eposode. Fid that missing epesode you've always wanted to listen to again.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "nodemon index.js && browser-sync start --proxy 'muapi.dev' --files 'main.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DannnB/mysterious-universe-api.git"
+  },
+  "author": "Dan B - danbdesigns.co.uk",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DannnB/mysterious-universe-api/issues"
+  },
+  "homepage": "https://github.com/DannnB/mysterious-universe-api#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.1.3"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.24.6",
+    "nodemon": "^1.18.3",
+    "reload": "^2.3.1"
+  }
+}
