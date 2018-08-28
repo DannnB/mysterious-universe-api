@@ -2,6 +2,20 @@ var express = require('express');
 var app = express();
 var path = require('path');
 
+
+
+app.get('/all', function (req, res) {
+  res.status(200);
+  res.json({
+    'series': [{
+        'name': 'Series Nineteen',
+        'number of epesodes': 24,
+        'active': false
+      }
+    ]
+  });
+});
+
 app.get('/', function (req, res) {
   res.json({
     'description': 'Mysterious Universe API',
