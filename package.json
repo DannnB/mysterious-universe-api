@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon index.js && browser-sync start --proxy 'muapi.localhost' --files 'index.js'"
+    "watch": "nodemon --exec babel-node server.js && browser-sync start"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,19 @@
   },
   "homepage": "https://github.com/DannnB/mysterious-universe-api#readme",
   "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "mongodb": "^3.1.4"
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.10",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "browser-sync": "^2.24.6",
-    "nodemon": "^1.18.3",
+    "nodemon": "^1.18.4",
     "reload": "^2.3.1"
   }
 }
