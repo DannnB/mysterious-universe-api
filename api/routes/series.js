@@ -21,13 +21,24 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:seriesid', function (req, res, next) {
-  if (req.params.seriesid != 20) {
+  if (req.params.seriesid != 20 && req.params.seriesid != 19) {
+    // catch all for testing
     res.status(404);
     res.json({
       'request_params': req.params,
       'message': 'Nothing found here. Please check back soon.'
     });
+  } else if (req.params.seriesid == 19) {
+    // the main function to get data
+    res.status(200).json({
+      'request_params': req.params,
+      'message': `Getting series ${req.params.seriesid} fromm database...`,
+      'data': {
+        
+      }
+    })
   } else {
+    // data example hardcoded
     res.status(200);
     res.json({
       'request_params': req.params,

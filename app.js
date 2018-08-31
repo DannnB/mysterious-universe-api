@@ -4,9 +4,20 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const seriesRoutes = require('./api/routes/series');
+const seasonRoutes = require('./api/routes/seasons');
+const authorsRoutes = require('./api/routes/authors');
 
-app.use('/series', seriesRoutes);
+mongoose.connect(
+  'mongodb+srv://admin:izGJLQPRbw8bjdkD@muapi-tclif.mongodb.net/podcasts?retryWrites=true',
+  {
+    useNewUrlParser: true
+  }
+);
+
+// mongoose.Promise = global.Promise; // uses Node js default promise, remvoes depreaction warnin
+
+app.use('/seasons', seasonRoutes);
+app.use('/authors', authorsRoutes);
 
 // Add headers before any data requests
 
@@ -18,19 +29,21 @@ app.use((req, res, next) => {
   );
   if (req.method == 'OPTIONS') {
     // euqal to http request
-    res.header('Access-Control-Allow-Methids', 'PUT, POST, PATCH, DELETE, GET');
+    res.header('Access-Control-Allow-Methords', 'PUT, POST, PATCH, DELETE, GET');
     return res.status(200).json({});
   }
   next();
 });
+
+// home
 
 app.use('/', (req, res, next) => {
   res.status(200).json({
     message: 'API is online',
     request: {
       type: 'GET',
-      message: 'A list of all the series',
-      url: 'https://' + process.env['C9_HOSTNAME'] + '/series/'
+      message: 'A list of all the season',
+      url: 'https://' + process.env['C9_HOSTNAME'] + '/seasons/'
     },
     credit: {
       creator: 'Dan B',
@@ -38,6 +51,5 @@ app.use('/', (req, res, next) => {
     }
   });
 });
-
 
 module.exports = app;
