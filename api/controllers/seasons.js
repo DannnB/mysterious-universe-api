@@ -61,14 +61,40 @@ exports.seasons_get_number = (req, res, next) => {
 };
 
 exports.seasons_get_episode_number = (req, res, next) => {
-  console.log(typeof(req.params.episodeNumber));
-  Seasons.find({
-    season_number: req.params.seriesNumber, // TODO: needs to be renamed to "seasonNumber"
-    episodes: {
-      $elemMatch: {
-        episode_number: parseInt(req.params.episodeNumber)
+  // console.log(typeof(req.params.episodeNumber));
+  const episodeNumber = parseInt(req.params.episodeNumber);
+  const seasonNumber = parseInt(req.params.seriesNumber);
+  Seasons.aggregate([{
+      "$match": {
+        "season_number": seasonNumber
+      }
+    },
+    {
+      // Acts as .select() function
+      "$project": {
+        "season_number": 1,
+        "name": 1,
+        "number_of_episodes": 1,
+        "episodes": {
+          "$filter": {
+            "input": "$episodes",
+            "as": "episode",
+            "cond": {
+              "$eq": ["$$episode.episode_number", episodeNumber]
+            }
+          }
+        }
       }
     }
+  ])
+
+  // Seasons.find({
+    // season_number: req.params.seriesNumber, // TODO: needs to be renamed to "seasonNumber"
+    // episodes: {
+    //   $elemMatch: {
+    //     episode_number: parseInt(req.params.episodeNumber)
+    //   }
+    // }
     
     // $and: [{
     //     season_number: req.params.seriesNumber
@@ -81,29 +107,32 @@ exports.seasons_get_episode_number = (req, res, next) => {
     //     }
     //   }
     // ],
-  })
-    .select('season_number name episodes')
+  //})
+    // .select('season_number name episodes')
     .exec()
     .then(docs => {
       //return more
+      console.log(docs)
       const response = {
-        msg: req.params.episodeNumber,
         count: docs.length,
-        data: docs.map(doc => {
-          return {
-            name: doc.name,
-            // episode: doc.episodes.episode_number,
-            // needs to return 1 matched episode...
-            episode: doc.episodes.map(episode => {
-              return {
-                _id: episode._id,
-                episode_number: episode.episode_number,
-              }
-            }),
-            // list of episodes for example
-            episodes: doc.episodes
-          };
-        })
+        data: docs
+        // data: docs.map(doc => {
+        //   return {
+        //     name: doc.name,
+        //     number_of_episodes: doc.number_of_episodes,
+        //     // episode: doc.episodes.episode_number,
+        //     // needs to return 1 matched episode...
+        //     episode: doc.episodes.map(episode => {
+        //       return {
+        //         _id: episode._id,
+        //         episode_number: episode.episode_number,
+        //         name: episode.name,
+        //       }
+        //     }),
+        //     // list of episodes for example
+        //     episodes: doc.episodes
+        //   };
+        // })
       };
       res.status(200).json(response);
     })
