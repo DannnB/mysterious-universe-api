@@ -8,7 +8,7 @@ const seasonRoutes = require('./api/routes/seasons');
 const authorsRoutes = require('./api/routes/authors');
 
 mongoose.connect(
-  'mongodb+srv://admin:izGJLQPRbw8bjdkD@muapi-tclif.mongodb.net/podcasts?retryWrites=true',
+  'mongodb+srv://admin:PASSWORD_HAS_BEEN_CHANGED@muapi-tclif.mongodb.net/podcasts?retryWrites=true',
   {
     useNewUrlParser: true
   }
