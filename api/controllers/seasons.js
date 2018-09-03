@@ -61,14 +61,28 @@ exports.seasons_get_number = (req, res, next) => {
 };
 
 exports.seasons_get_episode_number = (req, res, next) => {
-  console.log(req.params.episodeNumber);
+  console.log(typeof(req.params.episodeNumber));
   Seasons.find({
-    // season_number: req.params.seriesNumber,
-    // episodes: episodes.map(episode => {
-    // })
-  }) // find all // .limit(5) etc
-    // .where('season_number').equals(req.params.seriesNumber)
-    .select('episodes')
+    season_number: req.params.seriesNumber, // TODO: needs to be renamed to "seasonNumber"
+    episodes: {
+      $elemMatch: {
+        episode_number: parseInt(req.params.episodeNumber)
+      }
+    }
+    
+    // $and: [{
+    //     season_number: req.params.seriesNumber
+    //   }, // TODO: needs to be renamed to "seasonNumber"
+    //   {
+    //     episodes: {
+    //       $elemMatch: {
+    //         episode_number: parseInt(req.params.episodeNumber)
+    //       }
+    //     }
+    //   }
+    // ],
+  })
+    .select('season_number name episodes')
     .exec()
     .then(docs => {
       //return more
@@ -77,8 +91,18 @@ exports.seasons_get_episode_number = (req, res, next) => {
         count: docs.length,
         data: docs.map(doc => {
           return {
+            name: doc.name,
+            // episode: doc.episodes.episode_number,
+            // needs to return 1 matched episode...
+            episode: doc.episodes.map(episode => {
+              return {
+                _id: episode._id,
+                episode_number: episode.episode_number,
+              }
+            }),
+            // list of episodes for example
             episodes: doc.episodes
-          }
+          };
         })
       };
       res.status(200).json(response);
