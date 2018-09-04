@@ -90,23 +90,13 @@ exports.seasons_get_episode_number = (req, res, next) => {
       //return more
       let response;
 
-      console.log('docs:', docs);
-
-      // if (episodeNumber < docs.length || episodeNumber > docs.number_of_episodes){
-      //   response = { 
-      //     error: 'the error!'
-      //   };
-      // }else {
       let episodeTest = {
         data: docs.map(doc => {
           return {
             episode: doc.episodes
           }
         })
-      }
-
-      // console.log("data:", episodeTest.data[0].episode.length);
-      
+      }      
 
       if (episodeTest.data[0].episode.length == 0){
         response = { 
@@ -121,6 +111,7 @@ exports.seasons_get_episode_number = (req, res, next) => {
             }
           })
         };
+        res.status(404).json(response);
       }else {
         response = {
           data: docs.map(doc => {
@@ -144,9 +135,9 @@ exports.seasons_get_episode_number = (req, res, next) => {
             };
           })
         };
+        res.status(200).json(response);
       }
       
-      res.status(200).json(response);
     })
     .catch(err => {
       console.log(err);
