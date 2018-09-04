@@ -8,7 +8,7 @@ const seasonRoutes = require('./api/routes/seasons');
 const authorsRoutes = require('./api/routes/authors');
 
 mongoose.connect(
-  'mongodb+srv://admin:PASSWORD_HAS_BEEN_CHANGED@muapi-tclif.mongodb.net/podcasts?retryWrites=true',
+  `mongodb+srv://admin:${process.env['PASSWORD']}@muapi-tclif.mongodb.net/podcasts?retryWrites=true`,
   {
     useNewUrlParser: true
   }
@@ -43,7 +43,7 @@ app.use('/', (req, res, next) => {
     request: {
       type: 'GET',
       message: 'A list of all the season',
-      url: 'https://' + process.env['C9_HOSTNAME'] + '/seasons/'
+      url: 'https://' + process.env['HOSTNAME'] + '/seasons/'
     },
     credit: {
       creator: 'Dan B',
