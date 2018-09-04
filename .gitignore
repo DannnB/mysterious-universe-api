@@ -54,9 +54,8 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# THIS NEEDS TO BE UNCOMMENTED WHEN PRIVATE VARS ARE ADDED
 # dotenv environment variables file
-# .env
+.env
 
 # next.js build output
 .next
