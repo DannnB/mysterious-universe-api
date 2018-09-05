@@ -15,7 +15,10 @@ exports.seasons_get_all = (req, res, next) => {
             season_number: doc.season_number,
             name: doc.name,
             number_of_episodes: doc.number_of_episodes,
-            episodes: doc.episodes
+            request: {
+              type: 'GET',
+              url: `/seasons/${doc.season_number}`
+            }
           }
         })
       };
@@ -39,13 +42,29 @@ exports.seasons_get_number = (req, res, next) => {
       //return more
       const response = {
         count: docs.length,
-        data: docs.map(doc => {
+        data: docs.map(season => {
           return {
-            _id: doc._id,
-            season_number: doc.season_number,
-            name: doc.name,
-            number_of_episodes: doc.number_of_episodes,
-            episodes: doc.episodes
+            _id: season._id,
+            season_number: season.season_number,
+            name: season.name,
+            number_of_episodes: season.number_of_episodes,
+            episodesOld: season.episodes,
+            episodes: season.episodes.map(episode => {
+              return {
+                _id: episode._id,
+                episode_number: episode.episode_number,
+                name: episode.name,
+                length: episode.length,
+                author: episode.author,
+                release: episode.release,
+                description: episode.description,
+                url: 'https://mysteriousuniverse.org/2018/08/20-09-mu-podcast',
+                request: {
+                  type: 'GET',
+                  url: `/seasons/${season.season_number}/${episode.episode_number}`
+                }
+              }
+            })
           }
         })
       };
@@ -129,7 +148,8 @@ exports.seasons_get_episode_number = (req, res, next) => {
                   author: episode.author,
                   release: episode.release,
                   description: episode.description,
-                  url: 'https://mysteriousuniverse.org/2018/08/20-09-mu-podcast'
+                  url: 'https://mysteriousuniverse.org/2018/08/20-09-mu-podcast',
+                  
                 }
               })
             };
