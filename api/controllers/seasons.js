@@ -34,6 +34,7 @@ exports.seasons_get_all = (req, res, next) => {
 };
 
 exports.seasons_get_number = (req, res, next) => {
+  const seasonNumber = parseInt(req.params.seriesNumber);
   Seasons.find() // find all // .limit(5) etc
     .where('season_number').equals(req.params.seriesNumber)
     .select('season_number name number_of_episodes episodes')
@@ -48,23 +49,22 @@ exports.seasons_get_number = (req, res, next) => {
             season_number: season.season_number,
             name: season.name,
             number_of_episodes: season.number_of_episodes,
-            episodesOld: season.episodes,
-            episodes: season.episodes.map(episode => {
-              return {
-                _id: episode._id,
-                episode_number: episode.episode_number,
-                name: episode.name,
-                length: episode.length,
-                author: episode.author,
-                release: episode.release,
-                description: episode.description,
-                url: 'https://mysteriousuniverse.org/2018/08/20-09-mu-podcast',
-                request: {
-                  type: 'GET',
-                  url: `/seasons/${season.season_number}/${episode.episode_number}`
-                }
-              }
-            })
+            // episodes: season.episodes.map(episode => {
+            //   return {
+            //     _id: episode._id,
+            //     episode_number: episode.episode_number,
+            //     name: episode.name,
+            //     length: episode.length,
+            //     author: episode.author,
+            //     release: episode.release,
+            //     description: episode.description,
+            //     url: 'https://mysteriousuniverse.org/2018/08/20-09-mu-podcast',
+            //     request: {
+            //       type: 'GET',
+            //       url: `/seasons/${season.season_number}/${episode.episode_number}`
+            //     }
+            //   }
+            // })
           }
         })
       };
